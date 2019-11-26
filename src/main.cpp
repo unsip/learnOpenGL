@@ -1,13 +1,17 @@
-#include <glad/glad.h>
-#include <GLFW/glfw3.h>
-
 #include "shaders.hpp"
 
+#define GL_GLEXT_PROTOTYPES
+#include <GL/gl.h>
+#include <GLFW/glfw3.h>
+
+#include <cstdlib>
 #include <string>
 #include <iostream>
 
-#define DX 1920
-#define DY 1400
+namespace {
+
+constexpr auto DX = 1920;
+constexpr auto DY = 1400;
 
 void printCompileStatus(GLuint vertexShader)
 {
@@ -24,7 +28,7 @@ void printCompileStatus(GLuint vertexShader)
     }
 }
 
-void framebuffer_size_callback(GLFWwindow* window, int width, int height)
+void framebuffer_size_callback(GLFWwindow* /*window*/, int width, int height)
 {
     glViewport(0, 0, width, height);
 }
@@ -35,9 +39,10 @@ void processInput(GLFWwindow* window)
         glfwSetWindowShouldClose(window, true);
 }
 
+}                                                           // anonymous namespace
+
 int main()
 {
-
     glfwInit();
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
@@ -49,17 +54,10 @@ int main()
     {
         std::cout << "Failed to initialize GLFW window." << std::endl;
         glfwTerminate();
-        return -1;
+        return EXIT_FAILURE;
     }
 
     glfwMakeContextCurrent(window);
-
-    // Loading OpenGL functions and extensions.
-    if (!gladLoadGLLoader((GLADloadproc) glfwGetProcAddress))
-    {
-        std::cout << "Failed to initialize GLAD." << std::endl;
-        return -1;
-    }
 
     // Setting OpenGL viewport rendering on resize.
     glViewport(0, 0, DX, DY);
@@ -86,7 +84,8 @@ int main()
         glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
         GLuint vs = glCreateShader(GL_VERTEX_SHADER);
-        glShaderSource(vs, 1, VertShader.data(), nullptr);
+        const char* data = Shaders::Vert.data();
+        glShaderSource(vs, 1, &data, nullptr);
         glCompileShader(vs);
         printCompileStatus(vs);
 
@@ -95,5 +94,5 @@ int main()
     }
 
     glfwTerminate();
-    return 0;
+    return EXIT_SUCCESS;
 }
