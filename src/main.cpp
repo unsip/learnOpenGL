@@ -18,7 +18,7 @@ void printCompileStatus(GLuint vertexShader)
 
     if (!success)
     {
-        glGetShaderInfoLog(vertexShader, 512, nullptr, infoLog);
+        glGetShaderInfoLog(vertexShader, 512, nullptr, infoLog.data());
         std::cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILIED\n"
             << infoLog << std::endl;
     }
@@ -86,7 +86,7 @@ int main()
         glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
         GLuint vs = glCreateShader(GL_VERTEX_SHADER);
-        glShaderSource(vs, 1, VertShader, nullptr);
+        glShaderSource(vs, 1, VertShader.data(), nullptr);
         glCompileShader(vs);
         printCompileStatus(vs);
 
