@@ -1,0 +1,4 @@
+#include "shaders.hpp"
+
+std::string_view VertShader{R"(${SIMPLE_VERT})"};
+std::string_view FragShader{R"(${SIMPLE_FRAG})"};
