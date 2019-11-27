@@ -2,5 +2,9 @@
 
 #include <string_view>
 
-extern std::string_view VertShader;
-extern std::string_view FragShader;
+namespace Shaders {
+
+extern const std::string_view Vert;
+extern const std::string_view Frag;
+
+}                                                           // namespace Shaders

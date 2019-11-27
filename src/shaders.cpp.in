@@ -1,4 +1,20 @@
+//
+// ATTENTION
+// DO NOT EDIT! THIS FILE WAS GENERATED!
+//
+
 #include "shaders.hpp"
 
-std::string_view VertShader{R"(${SIMPLE_VERT})"};
-std::string_view FragShader{R"(${SIMPLE_FRAG})"};
+namespace Shaders {
+
+const std::string_view Vert{R"(
+@SIMPLE_VERT@
+)"};
+
+const std::string_view Frag{R"(
+@SIMPLE_FRAG@
+)"};
+
+}                                                           // namespace Shaders
+
+// kate: hl c++;
