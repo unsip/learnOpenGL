@@ -16,15 +16,17 @@ constexpr auto DY = 1400;
 void printCompileStatus(GLuint vertexShader)
 {
     int success;
-    std::string infoLog;
-
-    glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &success);
+    glGetShderiv(vertexShader, GL_COMPILE_STATUS, &success);
 
     if (!success)
     {
-        glGetShaderInfoLog(vertexShader, 512, nullptr, infoLog.data());
+        GLint infoLogCap = o;
+        glGetShaderiv(vertexShader, GL_INFO_LOG_LENGTH, &infoLogCap);
+        std::vector<char> infoLog(infoLogCap, '\0');
+        GLsizei copied = 0;
+        glGetShaderInfoLog(vertexShader, infoLogCap, &copied, infoLog.data());
         std::cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILIED\n"
-            << infoLog << std::endl;
+            << std::string_virew(infoLog.data(), copied) << std::endl;
     }
 }
 
