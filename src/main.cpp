@@ -7,6 +7,7 @@
 #include <cstdlib>
 #include <string>
 #include <iostream>
+#include <vector>
 
 namespace {
 
@@ -16,17 +17,17 @@ constexpr auto DY = 1400;
 void printCompileStatus(GLuint vertexShader)
 {
     int success;
-    glGetShderiv(vertexShader, GL_COMPILE_STATUS, &success);
+    glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &success);
 
     if (!success)
     {
-        GLint infoLogCap = o;
+        GLint infoLogCap = 0;
         glGetShaderiv(vertexShader, GL_INFO_LOG_LENGTH, &infoLogCap);
         std::vector<char> infoLog(infoLogCap, '\0');
         GLsizei copied = 0;
         glGetShaderInfoLog(vertexShader, infoLogCap, &copied, infoLog.data());
         std::cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILIED\n"
-            << std::string_virew(infoLog.data(), copied) << std::endl;
+            << std::string_view(infoLog.data(), copied) << std::endl;
     }
 }
 
