@@ -13,7 +13,6 @@ namespace {
 
 constexpr auto DX = 1920;
 constexpr auto DY = 1400;
-
 void printCompileStatus(GLuint vertexShader)
 {
     int success;
@@ -87,8 +86,8 @@ int main()
         glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
         GLuint vs = glCreateShader(GL_VERTEX_SHADER);
-        const char* data = Shaders::Vert.data();
-        glShaderSource(vs, 1, &data, nullptr);
+        const char* vertData = Shaders::Vert.data();
+        glShaderSource(vs, 1, &vertData, nullptr);
         glCompileShader(vs);
         printCompileStatus(vs);
 

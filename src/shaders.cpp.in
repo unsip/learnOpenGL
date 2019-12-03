@@ -7,11 +7,11 @@
 
 namespace Shaders {
 
-const std::string_view Vert{R"(
+extern const std::string_view Vert{R"(
 @SIMPLE_VERT@
 )"};
 
-const std::string_view Frag{R"(
+extern const std::string_view Frag{R"(
 @SIMPLE_FRAG@
 )"};
 
