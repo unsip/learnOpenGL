@@ -19,4 +19,4 @@ set(OpenGL_GL_PREFERENCE GLVND)
 # OpenGL
 find_package(OpenGL REQUIRED)
 
-add_subdirectory(src)
+add_subdirectory(helloGL)
