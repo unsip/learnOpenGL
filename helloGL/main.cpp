@@ -5,6 +5,7 @@
 #include <GLFW/glfw3.h>
 
 #include <cstdlib>
+#include <cmath>
 #include <string>
 #include <iostream>
 #include <vector>
@@ -66,14 +67,9 @@ int main()
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
     float vertices[] = {
-        0.5f, 0.5f, 0.0f,
-        0.5f, -0.5f, 0.0f,
-        -0.5f, -0.5f, 0.0f,
-        -0.5f, 0.5f, 0.0f,
-    };
-    GLuint indices[] = {
-        0, 1, 3,
-        1, 2, 3
+        0.5f, 0.5f, 0.0f, 1.f, 0.f, 0.f,
+        0.5f, -0.5f, 0.0f, 0.f, 1.f, 0.f,
+        -0.5f, -0.5f, 0.0f, 0.f, 0.f, 1.f
     };
 
     // Initialize and bind Vertex Array Object (VAO), Vertex Buffer Object
@@ -86,11 +82,6 @@ int main()
     glGenBuffers(1, &VBO);
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-
-    GLuint EBO;
-    glGenBuffers(1, &EBO);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
     GLuint vs = glCreateShader(GL_VERTEX_SHADER);
     const char* vertData = Shaders::Vert.data();
@@ -113,22 +104,30 @@ int main()
     glDeleteShader(vs);
     glDeleteShader(fs);
 
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+    // Position attribute.
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
 
+    // Color attribute.
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
+    glEnableVertexAttribArray(1);
+
     // Draw in wireframe mode.
-    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+    //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+
+    // Activating the shader.
+    glUseProgram(shaderProgram);
 
     while(!glfwWindowShouldClose(window))
     {
         processInput(window);
 
+        // Clear color buffer.
         glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
         glClear(GL_COLOR_BUFFER_BIT);
-        glUseProgram(shaderProgram);
 
         glBindVertexArray(VAO);
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+        glDrawArrays(GL_TRIANGLES, 0, 3);
         glBindVertexArray(0);
 
         glfwSwapBuffers(window);
@@ -137,7 +136,6 @@ int main()
 
     // Free memory from buffer objects.
     glDeleteVertexArrays(1, &VAO);
-    glDeleteBuffers(1, &EBO);
     glDeleteBuffers(1, &VBO);
     glfwTerminate();
 
